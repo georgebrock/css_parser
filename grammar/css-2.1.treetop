@@ -19,7 +19,7 @@ grammar CSS
   end
   
   rule escape
-    unicode / "\\" ![\r\n\f0-9a-f]
+    unicode / "\\" ![\r\n\f0-9a-f] .
   end
 
   rule comment
@@ -39,7 +39,7 @@ grammar CSS
   end
 
   rule string_contents
-    ( ![\n\r\f\\"] / "\\" nl / escape )*
+    ( ![\n\r\f\\"] . / "\\" nl / escape )*
   end
 
   rule STRING
