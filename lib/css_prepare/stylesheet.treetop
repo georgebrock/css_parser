@@ -1,4 +1,11 @@
 grammar Stylesheet
+  rule stylesheet
+    ( CHARSET_SYM STRING ';' )?
+    ( S / CDO / CDC )*
+    ( import ( CDO S* / CDC S* )* )*
+    ( ( ruleset / media / page ) ( CDO S* / CDC S* )* )*
+  end
+
   rule h
     [0-9a-f]
   end
@@ -23,22 +30,6 @@ grammar Stylesheet
     [_a-z0-9-] / nonascii / escape
   end
 
-  rule string1
-    "\"" ( ![\n\r\f\\"] / "\\" nl / escape )* "\""
-  end
-
-  rule string2
-    "'" ( ![\n\r\f\\'] / "\\" nl / escape )* "'"
-  end
-
-  rule invalid1
-    "\"" ( ![\n\r\f\\"] / "\\" nl / escape )*
-  end
-
-  rule invalid2
-    "\'" ( ![\n\r\f\\'] / "\\" nl / escape )*
-  end
-
   rule comment
     '/*' (!'*/' . )* '*/'
   end
@@ -55,12 +46,16 @@ grammar Stylesheet
     [0-9]+ / [0-9]* "." [0-9]+
   end
 
+  rule string_contents
+    ( ![\n\r\f\\"] / "\\" nl / escape )*
+  end
+
   rule string
-    string1 / string2
+    "\"" string_contents "\"" / "'" string_contents "'"
   end
 
   rule invalid
-    invalid1 / invalid2
+    ( "\"" / "'" ) string_contents
   end
 
   rule url
@@ -131,11 +126,9 @@ grammar Stylesheet
     "@charset "
   end
 
-
   rule IMPORTANT_SYM
     "!" ( w / comment )* "important"
   end
-
 
   rule EMS
     num "em"
@@ -173,20 +166,12 @@ grammar Stylesheet
     num
   end
 
-
   rule URI
     "url(" w (string / url) w ")"
   end
 
   rule FUNCTION
     ident "("
-  end
-
-  rule stylesheet
-    ( CHARSET_SYM STRING ';' )?
-    ( S / CDO / CDC )*
-    ( import ( CDO S* / CDC S* )* )*
-    ( ( ruleset / media / page ) ( CDO S* / CDC S* )* )*
   end
 
   rule import
@@ -286,5 +271,4 @@ grammar Stylesheet
   rule hexcolor
     '#' ( h h h / h h h h h h )
   end
-
 end
