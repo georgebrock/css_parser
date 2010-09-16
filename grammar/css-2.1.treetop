@@ -1,4 +1,4 @@
-grammar Stylesheet
+grammar CSS
   rule stylesheet
     ( CHARSET_SYM STRING ';' )?
     ( S / CDO / CDC )*
