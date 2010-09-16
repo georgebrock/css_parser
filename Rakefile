@@ -8,3 +8,8 @@ Rake::TestTask.new do |t|
 end
 
 task :default => ["test"]
+
+desc 'Build the CSS gem'
+task :gem do
+  exec 'gem build css.gemspec && mkdir -p pkg && mv ./css-*.gem pkg'
+end
