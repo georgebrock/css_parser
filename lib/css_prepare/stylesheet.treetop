@@ -22,24 +22,16 @@ grammar Stylesheet
     unicode / "\\" ![\r\n\f0-9a-f]
   end
 
-  rule nmstart
-    [_a-z] / nonascii / escape
-  end
-
-  rule nmchar
-    [_a-z0-9-] / nonascii / escape
-  end
-
   rule comment
     '/*' (!'*/' . )* '*/'
   end
 
   rule ident
-    '-'? nmstart nmchar*
+    '-'? ( [_a-z] / nonascii / escape ) ( [_a-z0-9-] / nonascii / escape )*
   end
 
   rule name
-    nmchar+
+    ( [_a-z0-9-] / nonascii / escape )+
   end
 
   rule num
@@ -50,7 +42,7 @@ grammar Stylesheet
     ( ![\n\r\f\\"] / "\\" nl / escape )*
   end
 
-  rule string
+  rule STRING
     "\"" string_contents "\"" / "'" string_contents "'"
   end
 
@@ -62,12 +54,8 @@ grammar Stylesheet
     ( [!#$%&*-~] / nonascii / escape )*
   end
 
-  rule s
-    [ \t\r\n\f]+
-  end
-
   rule w
-    s?
+    S?
   end
 
   rule nl
@@ -75,7 +63,7 @@ grammar Stylesheet
   end
 
   rule S
-    s
+    [ \t\r\n\f]+
   end
 
   rule CDO
@@ -92,10 +80,6 @@ grammar Stylesheet
 
   rule DASHMATCH
     "|="
-  end
-
-  rule STRING
-    string
   end
 
   rule INVALID
@@ -167,7 +151,7 @@ grammar Stylesheet
   end
 
   rule URI
-    "url(" w (string / url) w ")"
+    "url(" w (STRING / url) w ")"
   end
 
   rule FUNCTION
