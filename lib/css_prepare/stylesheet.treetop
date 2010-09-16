@@ -1,0 +1,290 @@
+grammar Stylesheet
+  rule h
+    [0-9a-f]
+  end
+
+  rule nonascii
+    [\200-\377]
+  end
+
+  rule unicode
+    "\\" h h? h? h? h? h? ("\r\n" / [ \t\r\n\f])?
+  end
+  
+  rule escape
+    unicode / "\\" ![\r\n\f0-9a-f]
+  end
+
+  rule nmstart
+    [_a-z] / nonascii / escape
+  end
+
+  rule nmchar
+    [_a-z0-9-] / nonascii / escape
+  end
+
+  rule string1
+    "\"" ( ![\n\r\f\\"] / "\\" nl / escape )* "\""
+  end
+
+  rule string2
+    "'" ( ![\n\r\f\\'] / "\\" nl / escape )* "'"
+  end
+
+  rule invalid1
+    "\"" ( ![\n\r\f\\"] / "\\" nl / escape )*
+  end
+
+  rule invalid2
+    "\'" ( ![\n\r\f\\'] / "\\" nl / escape )*
+  end
+
+  rule comment
+    '/*' (!'*/' . )* '*/'
+  end
+
+  rule ident
+    '-'? nmstart nmchar*
+  end
+
+  rule name
+    nmchar+
+  end
+
+  rule num
+    [0-9]+ / [0-9]* "." [0-9]+
+  end
+
+  rule string
+    string1 / string2
+  end
+
+  rule invalid
+    invalid1 / invalid2
+  end
+
+  rule url
+    ( [!#$%&*-~] / nonascii / escape )*
+  end
+
+  rule s
+    [ \t\r\n\f]+
+  end
+
+  rule w
+    s?
+  end
+
+  rule nl
+    "\n" / "\r\n" / "\r" / "\f"
+  end
+
+  rule S
+    s
+  end
+
+  rule CDO
+    "<!--"
+  end
+
+  rule CDC
+    "-->"
+  end
+
+  rule INCLUDES
+    "~="
+  end
+
+  rule DASHMATCH
+    "|="
+  end
+
+  rule STRING
+    string
+  end
+
+  rule INVALID
+    invalid
+  end
+
+  rule IDENT
+    ident
+  end
+
+  rule HASH
+    "#" name
+  end
+
+  rule IMPORT_SYM
+    "@import"
+  end
+
+  rule PAGE_SYM
+    "@page"
+  end
+
+  rule MEDIA_SYM
+    "@media"
+  end
+
+  rule CHARSET_SYM
+    "@charset "
+  end
+
+
+  rule IMPORTANT_SYM
+    "!" ( w / comment )* "important"
+  end
+
+
+  rule EMS
+    num "em"
+  end
+
+  rule EXS
+    num "ex"
+  end
+
+  rule LENGTH
+    num ( "px" / "cm" / "mm" / "in" / "pt" / "pc" )
+  end
+
+  rule ANGLE
+    num ( "deg" / "rad" / "grad" )
+  end
+
+  rule TIME
+    num ( "ms" / "s" )
+  end
+
+  rule FREQ
+    num ( "hz" / "khz" )
+  end
+
+  rule DIMENSION
+    num ident
+  end
+
+  rule PERCENTAGE
+    num "%"
+  end
+
+  rule NUMBER
+    num
+  end
+
+
+  rule URI
+    "url(" w (string / url) w ")"
+  end
+
+  rule FUNCTION
+    ident "("
+  end
+
+  rule stylesheet
+    ( CHARSET_SYM STRING ';' )?
+    ( S / CDO / CDC )*
+    ( import ( CDO S* / CDC S* )* )*
+    ( ( ruleset / media / page ) ( CDO S* / CDC S* )* )*
+  end
+
+  rule import
+    IMPORT_SYM S*
+    (STRING / URI) S* media_list? ';' S*
+  end
+
+  rule media
+    MEDIA_SYM S* media_list '{' S* ruleset* '}' S*
+  end
+
+  rule media_list
+    medium ( COMMA S* medium )*
+  end
+
+  rule medium
+    IDENT S*
+  end
+
+  rule page
+    PAGE_SYM S* pseudo_page?
+    '{' S* declaration? ( ';' S* declaration? )* '}' S*
+  end
+
+  rule pseudo_page
+    ':' IDENT S*
+  end
+
+  rule operator
+    '/' S* / ',' S*
+  end
+
+  rule combinator
+    '+' S* / '>' S*
+  end
+
+  rule unary_operator
+    '-' / '+'
+  end
+
+  rule property
+    IDENT S*
+  end
+
+  rule ruleset
+    selector ( ',' S* selector )*
+      '{' S* declaration? ( ';' S* declaration? )* '}' S*
+  end
+
+  rule selector
+    simple_selector ( combinator selector / S+ ( combinator? selector )? )?
+  end
+
+  rule simple_selector
+    element_name ( HASH / class / attrib / pseudo )*
+    / ( HASH / class / attrib / pseudo )+
+  end
+
+  rule class
+    '.' IDENT
+  end
+
+  rule element_name
+    IDENT / '*'
+  end
+
+  rule attrib
+    '[' S* IDENT S* ( ( '=' / INCLUDES / DASHMATCH ) S* ( IDENT / STRING ) S* )? ']'
+  end
+
+  rule pseudo
+    ':' ( IDENT / FUNCTION S* ( IDENT S* )? ')' )
+  end
+
+  rule declaration
+    property ':' S* expr prio?
+  end
+
+  rule prio
+    IMPORTANT_SYM S*
+  end
+
+  rule expr
+    term ( operator? term )*
+  end
+
+  rule term
+    unary_operator?
+      ( NUMBER S* / PERCENTAGE S* / LENGTH S* / EMS S* / EXS S* / ANGLE S* / TIME S* / FREQ S* )
+    / STRING S* / IDENT S* / URI S* / hexcolor / function
+  end
+
+  rule function
+    FUNCTION S* expr ')' S*
+  end
+
+  rule hexcolor
+    '#' ( h h h / h h h h h h )
+  end
+
+end
