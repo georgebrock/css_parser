@@ -4,6 +4,7 @@ grammar CSS
     ( S / CDO / CDC )*
     ( import ( CDO S* / CDC S* )* )*
     ( ( ruleset / media / page ) ( CDO S* / CDC S* )* )*
+    <Stylesheet>
   end
 
   rule h
@@ -203,10 +204,12 @@ grammar CSS
   rule ruleset
     selector ( ',' S* selector )*
       '{' S* declaration? ( ';' S* declaration? )* '}' S*
+    <RuleSet>
   end
 
   rule selector
     simple_selector ( combinator selector / S+ ( combinator? selector )? )?
+    <Selector>
   end
 
   rule simple_selector
@@ -232,6 +235,7 @@ grammar CSS
 
   rule declaration
     property ':' S* expr prio?
+    <Declaration>
   end
 
   rule prio
