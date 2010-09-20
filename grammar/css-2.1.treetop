@@ -40,7 +40,7 @@ grammar CSS
   end
 
   rule string_contents
-    ( ![\n\r\f\\"] . / "\\" nl / escape )*
+    ( ![\n\r\f\\"\\'] . / "\\" nl / escape )*
   end
 
   rule STRING
