@@ -9,6 +9,7 @@ module CSS
   autoload :Expression, 'css/expression'
   autoload :Term, 'css/term'
   autoload :StringExpression, 'css/string_expression'
+  autoload :Color, 'css/color'
 
   def self.parser
     @parser ||= (

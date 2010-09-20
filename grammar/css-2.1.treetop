@@ -259,6 +259,8 @@ grammar CSS
   end
 
   rule hexcolor
-    '#' ( h h h / h h h h h h )
+    '#' red:(h h) green:(h h) blue:(h h) <Color> /
+    '#' red:h green:h blue:h <Color> /
+    'rgb(' S* red:( PERCENTAGE / num ) S* ',' S* green:( PERCENTAGE / num ) S* ',' S* blue:( PERCENTAGE / num ) S* ')' <Color>
   end
 end
