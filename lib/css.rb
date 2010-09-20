@@ -7,8 +7,14 @@ module CSS
   autoload :Selector, 'css/selector'
   autoload :Declaration, 'css/declaration'
 
+  def self.parser
+    @parser ||= (
+      Treetop.load File.join(File.dirname(__FILE__), *%w[ .. grammar css-2.1 ])
+      CSSParser.new
+    )
+  end
+
   def self.parse(css)
-    Treetop.load File.join(File.dirname(__FILE__), *%w[ .. grammar css-2.1 ]) unless defined? CSSParser
-    CSSParser.new.parse(css)
+    parser.parse(css)
   end
 end
