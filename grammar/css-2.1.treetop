@@ -244,6 +244,7 @@ grammar CSS
 
   rule expr
     term ( operator? term )*
+    <Expression>
   end
 
   rule term

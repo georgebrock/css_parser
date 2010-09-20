@@ -5,7 +5,7 @@ class CSS::RuleSet < Treetop::Runtime::SyntaxNode
 
   def declarations
     @declaration ||= elements_of_type(CSS::Declaration).inject({}) do |acc,declaration|
-      acc.merge( declaration.property.text_value.strip => declaration.expr.text_value.strip )
+      acc.merge( declaration.property.text_value.strip => declaration.expr.value )
     end
   end
 

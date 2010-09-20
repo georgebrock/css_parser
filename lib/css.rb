@@ -6,6 +6,7 @@ module CSS
   autoload :RuleSet, 'css/rule_set'
   autoload :Selector, 'css/selector'
   autoload :Declaration, 'css/declaration'
+  autoload :Expression, 'css/expression'
 
   def self.parser
     @parser ||= (
