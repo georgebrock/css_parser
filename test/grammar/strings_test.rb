@@ -14,16 +14,16 @@ class StringsTest < Test::Unit::TestCase
 
     should 'accept strings containing escaped quotes' do
       stylesheet = parse %q[ p:after { content: "A \\" string" } ]
-      assert_equal 'A \\" string', stylesheet.rule_sets.first.declarations['content']
+      assert_equal 'A " string', stylesheet.rule_sets.first.declarations['content']
 
       stylesheet = parse %q[ p:after { content: "A \\22 string" } ]
-      assert_equal 'A \\22 string', stylesheet.rule_sets.first.declarations['content']
+      assert_equal 'A " string', stylesheet.rule_sets.first.declarations['content']
 
       stylesheet = parse %q[ p:after { content: 'A \\' string' } ]
-      assert_equal "A \\' string", stylesheet.rule_sets.first.declarations['content']
+      assert_equal "A ' string", stylesheet.rule_sets.first.declarations['content']
 
       stylesheet = parse %q[ p:after { content: 'A \\27 string' } ]
-      assert_equal "A \\27 string", stylesheet.rule_sets.first.declarations['content']
+      assert_equal "A ' string", stylesheet.rule_sets.first.declarations['content']
     end
 
     should 'accept strings that are split over multiple lines' do
