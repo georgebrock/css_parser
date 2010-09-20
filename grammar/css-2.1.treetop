@@ -44,7 +44,8 @@ grammar CSS
   end
 
   rule STRING
-    "\"" string_contents "\"" / "'" string_contents "'"
+    "\"" string_contents "\"" <StringExpression> /
+    "'" string_contents "'" <StringExpression>
   end
 
   rule invalid

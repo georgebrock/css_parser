@@ -7,6 +7,8 @@ module CSS
   autoload :Selector, 'css/selector'
   autoload :Declaration, 'css/declaration'
   autoload :Expression, 'css/expression'
+  autoload :Term, 'css/term'
+  autoload :StringExpression, 'css/string_expression'
 
   def self.parser
     @parser ||= (
