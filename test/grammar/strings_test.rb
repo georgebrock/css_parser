@@ -27,8 +27,14 @@ class StringsTest < Test::Unit::TestCase
     end
 
     should 'accept strings that are split over multiple lines' do
-      stylesheet = parse %Q[ p:after { content: "A\\\n string" } ]
-      assert_equal "A\\\n string", stylesheet.rule_sets.first.declarations['content']
+      [
+        %Q[ p:after { content: "A\\\n string" } ],
+        %Q[ p:after { content: "A\\\r\n string" } ],
+        %Q[ p:after { content: "A\\\r string" } ]
+      ].each do |css|
+        stylesheet = parse css
+        assert_equal "A string", stylesheet.rule_sets.first.declarations['content']
+      end
     end
   end
 end
