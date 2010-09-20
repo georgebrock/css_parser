@@ -250,12 +250,12 @@ grammar CSS
 
   rule term
     unary_operator?
-      ( NUMBER S* / PERCENTAGE S* / LENGTH S* / EMS S* / EXS S* / ANGLE S* / TIME S* / FREQ S* )
-    / STRING S* / IDENT S* / URI S* / hexcolor / function
+      ( PERCENTAGE S* / LENGTH S* / EMS S* / EXS S* / ANGLE S* / TIME S* / FREQ S* / num S* ) /
+    STRING S* / URI S* / hexcolor S* / function S* / ident S*
   end
 
   rule function
-    FUNCTION S* expr ')' S*
+    FUNCTION S* term ( ',' S* term )* ')'
   end
 
   rule hexcolor
