@@ -88,10 +88,6 @@ grammar CSS
     invalid
   end
 
-  rule IDENT
-    ident
-  end
-
   rule HASH
     "#" name
   end
@@ -148,10 +144,6 @@ grammar CSS
     num "%"
   end
 
-  rule NUMBER
-    num
-  end
-
   rule URI
     "url(" w (STRING / url) w ")"
   end
@@ -174,7 +166,7 @@ grammar CSS
   end
 
   rule medium
-    IDENT S*
+    ident S*
   end
 
   rule page
@@ -183,7 +175,7 @@ grammar CSS
   end
 
   rule pseudo_page
-    ':' IDENT S*
+    ':' ident S*
   end
 
   rule operator
@@ -199,7 +191,7 @@ grammar CSS
   end
 
   rule property
-    IDENT S*
+    ident S*
   end
 
   rule ruleset
@@ -219,19 +211,19 @@ grammar CSS
   end
 
   rule class
-    '.' IDENT
+    '.' ident
   end
 
   rule element_name
-    IDENT / '*'
+    ident / '*'
   end
 
   rule attrib
-    '[' S* IDENT S* ( ( '=' / INCLUDES / DASHMATCH ) S* ( IDENT / STRING ) S* )? ']'
+    '[' S* ident S* ( ( '=' / INCLUDES / DASHMATCH ) S* ( ident / STRING ) S* )? ']'
   end
 
   rule pseudo
-    ':' ( IDENT / FUNCTION S* ( IDENT S* )? ')' )
+    ':' ( ident / FUNCTION S* ( ident S* )? ')' )
   end
 
   rule declaration
