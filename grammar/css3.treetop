@@ -1,0 +1,154 @@
+module CSS
+  grammar CSS3
+    # CSS3 grammar based on: http://www.w3.org/TR/css3-syntax
+
+    rule stylesheet
+      ("<!--" / "-->" / ws / statement)*
+    end
+
+    rule statement
+      (ruleset / at_rule)
+    end
+
+    rule at_rule
+      atkeyword ws any* (block / ";" ws)
+    end
+
+    rule block
+      "{" ws ( any / block / atkeyword ws / ";" ws )* ws "}" ws
+    end
+
+    rule ruleset
+      selector? "{" ws declaration? (";" declaration?)* "}" ws
+    end
+
+    rule selector
+      any+
+    end
+
+    rule declaration
+      property ":" ws value
+    end
+
+    rule property
+      ident ws
+    end
+
+    rule value
+      (any / block / atkeyword ws)+
+    end
+
+    rule any
+      (ident / number / percentage / dimension / string / delim / uri / hash /
+       include / function ws any* ')' / dashmatch / '(' ws any* ')' /
+       '[' ws any* ']' / ws)
+    end
+
+    # In the CSS spec, the following rules are in the lexer rather than the
+    # parser. As we're using a PEG, we have no need of a separate lexing step.
+
+    rule ident
+      "-"? ([a-zA-Z] / '_' / nonascii / escape) nmchar*
+    end
+
+    rule atkeyword
+      "@" ident
+    end
+
+    rule hash
+      "#" ident
+    end
+
+    rule percent
+      number "%"
+    end
+
+    rule dimension
+      number ident
+    end
+
+    rule uri
+      "url(" ws (string / urlchar*) ws ")"
+    end
+
+    rule unicode_range
+    end
+
+    rule comment
+    end
+
+    rule function
+    end
+
+    rule includes
+    end
+
+    rule dashmatch
+    end
+
+    rule prefixmatch
+    end
+
+    rule suffixmatch
+    end
+
+    rule substringmatch
+    end
+
+    rule char
+    end
+
+    rule name
+      nmchar+
+    end
+
+    rule nonascii
+      # This may need to be broken down
+      # See: https://groups.google.com/forum/#!topic/treetop-dev/SR681uzWg2o
+      [\x80-\xD7FF\xE000-\xFFFD\x10000-\x10FFFF]
+    end
+
+    rule unicode
+      "\" [0-9a-fA-F] 1..6 w?
+    end
+
+    rule escape
+      # This may need to be broken down
+      # See: https://groups.google.com/forum/#!topic/treetop-dev/SR681uzWg2o
+      unicode / '\' [\x20-\x7E\x80-\xD7FF\xE000-\xFFFD\x10000-\x10FFFF]
+    end
+
+    rule nmchar
+      [a-zA-Z0-9] / "-" / "_" / nonascii / escape
+    end
+
+    rule number
+      [0-9]* '.' [0-9]+ / [0-9]+
+    end
+
+    rule string
+      '"' (stringchar / "'")* '"' / "'" (stringchar / '"') "'"
+    end
+
+    rule stringchar
+      urlchar / \x20 / "\" nl
+    end
+
+    rule urlchar
+      [\x9\x21\x23-\x26\x27-\x7E] / nonascii / escape
+    end
+
+    # Newline
+    rule nl
+      "\n" / "\r\n" / "\r" / "\f"
+    end
+
+    # Whitespace
+    rule w
+      ("\t" / "\n" / "\f" / "\r" / " ")*
+    end
+    rule ws
+      w*
+    end
+  end
+end
