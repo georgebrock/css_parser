@@ -3,7 +3,7 @@ module CSS
     # CSS3 grammar based on: http://www.w3.org/TR/css3-syntax § 4.2, 4.3
 
     rule stylesheet
-      ('<!--' / '-->' / w / statement)*
+      ('<!--' / '-->' / w / statement)* <CSS::Stylesheet>
     end
 
     rule statement
@@ -11,7 +11,7 @@ module CSS
     end
 
     rule at_rule
-      atkeyword ws any* (block / ';' ws)
+      atkeyword ws any* (block / ';' ws) <CSS::AtRule>
     end
 
     rule block
@@ -19,15 +19,15 @@ module CSS
     end
 
     rule ruleset
-      selector? '{' ws declaration? (';' declaration?)* '}' ws
+      selector? '{' ws declaration? (';' ws declaration?)* '}' ws <CSS::RuleSet>
     end
 
     rule selector
-      any+
+      any+ <CSS::Selector>
     end
 
     rule declaration
-      property ':' ws value
+      property ':' ws value <CSS::Declaration>
     end
 
     rule property
