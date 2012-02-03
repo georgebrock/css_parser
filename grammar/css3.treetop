@@ -1,6 +1,6 @@
 module CSS
   grammar CSS3
-    # CSS3 grammar based on: http://www.w3.org/TR/css3-syntax
+    # CSS3 grammar based on: http://www.w3.org/TR/css3-syntax § 4.2, 4.3
 
     rule stylesheet
       ("<!--" / "-->" / ws / statement)*
@@ -109,6 +109,7 @@ module CSS
     end
 
     rule unicode
+      # See § 4.1
       '\\' [0-9a-fA-F] 1..6 w?
     end
 

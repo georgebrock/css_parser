@@ -1,0 +1,8 @@
+§3:   @charset rules must be before all other characters except an optional BOM
+      Charset is apparently a string, e.g. `@charset "ISO-8859-1";`
+      Valid charsets are listed here:
+          http://www.iana.org/assignments/character-sets
+
+§4.1: Everything under CSS's control is case insensitive
+      This doesn't include font names, ids, classes and element names
+      Element names are case sensitive with XHTML
