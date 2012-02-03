@@ -103,9 +103,7 @@ module CSS
     end
 
     rule nonascii
-      # This may need to be broken down
-      # See: https://groups.google.com/forum/#!topic/treetop-dev/SR681uzWg2o
-      [\x80-\xD7FF\xE000-\xFFFD\x10000-\x10FFFF]
+      [\u80-\uD7FF\uE000-\uFFFD\u10000-\u10FFFF]
     end
 
     rule unicode
@@ -114,9 +112,7 @@ module CSS
     end
 
     rule escape
-      # This may need to be broken down
-      # See: https://groups.google.com/forum/#!topic/treetop-dev/SR681uzWg2o
-      unicode / '\\' [\x20-\x7E\x80-\xD7FF\xE000-\xFFFD\x10000-\x10FFFF]
+      unicode / '\\' [\u20-\u7E\u80-\uD7FF\uE000-\uFFFD\u10000-\u10FFFF]
     end
 
     rule nmchar
