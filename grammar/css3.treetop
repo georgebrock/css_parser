@@ -110,6 +110,9 @@ module CSS
     end
 
     rule nonascii
+      #TODO Ruby 1.8's poor Unicode support makes this break
+      #     I should either switch to 1.9, or do something clever with
+      #     matching the bytes.
       [\u80-\uD7FF\uE000-\uFFFD\u10000-\u10FFFF]
     end
 
