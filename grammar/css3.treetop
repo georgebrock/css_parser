@@ -39,8 +39,10 @@ module CSS
     end
 
     rule any
-      (ident / number / percentage / dimension / string / delim / uri / hash /
-       include / function ws any* ')' / dashmatch / '(' ws any* ')' /
+      # The grammar also includes DELIM in this rule, but DELIM is not
+      # defined. See the "Changes from CSS2" section after the grammar.
+      (ident / number / percentage / dimension / string / uri / hash /
+       includes / function ws any* ')' / dashmatch / '(' ws any* ')' /
        '[' ws any* ']' / ws)
     end
 
@@ -59,7 +61,7 @@ module CSS
       '#' ident
     end
 
-    rule percent
+    rule percentage
       number '%'
     end
 
@@ -72,30 +74,35 @@ module CSS
     end
 
     rule unicode_range
+      'U+' [0-9A-F?] 1..6 ('-' [0-9A-F] 1..6)?
     end
 
     rule comment
+      '/*' [^*]* '*'+ ([^/] [^*]* '*'+)* '/'
     end
 
     rule function
+      ident '('
     end
 
     rule includes
+      '~='
     end
 
     rule dashmatch
+      '|='
     end
 
     rule prefixmatch
+      '^='
     end
 
     rule suffixmatch
+      '$='
     end
 
     rule substringmatch
-    end
-
-    rule char
+      '*='
     end
 
     rule name
