@@ -43,7 +43,7 @@ module CSS
       # defined. See the "Changes from CSS2" section after the grammar.
       (ident / number / percentage / dimension / string / uri / hash /
        includes / function ws any* ')' / dashmatch / '(' ws any* ')' /
-       '[' ws any* ']' / ws)
+       '[' ws any* ']' / w)
     end
 
     # In the CSS spec, the following rules are in the lexer rather than the
