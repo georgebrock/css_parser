@@ -109,13 +109,13 @@ module CSS
     end
 
     rule unicode
-      "\" [0-9a-fA-F] 1..6 w?
+      '\\' [0-9a-fA-F] 1..6 w?
     end
 
     rule escape
       # This may need to be broken down
       # See: https://groups.google.com/forum/#!topic/treetop-dev/SR681uzWg2o
-      unicode / '\' [\x20-\x7E\x80-\xD7FF\xE000-\xFFFD\x10000-\x10FFFF]
+      unicode / '\\' [\x20-\x7E\x80-\xD7FF\xE000-\xFFFD\x10000-\x10FFFF]
     end
 
     rule nmchar
@@ -131,7 +131,7 @@ module CSS
     end
 
     rule stringchar
-      urlchar / \x20 / "\" nl
+      urlchar / "\x20" / "\\" nl
     end
 
     rule urlchar
