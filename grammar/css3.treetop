@@ -3,7 +3,7 @@ module CSS
     # CSS3 grammar based on: http://www.w3.org/TR/css3-syntax § 4.2, 4.3
 
     rule stylesheet
-      ("<!--" / "-->" / ws / statement)*
+      ('<!--' / '-->' / w / statement)*
     end
 
     rule statement
@@ -11,15 +11,15 @@ module CSS
     end
 
     rule at_rule
-      atkeyword ws any* (block / ";" ws)
+      atkeyword ws any* (block / ';' ws)
     end
 
     rule block
-      "{" ws ( any / block / atkeyword ws / ";" ws )* ws "}" ws
+      '{' ws ( any / block / atkeyword ws / ';' ws )* ws '}' ws
     end
 
     rule ruleset
-      selector? "{" ws declaration? (";" declaration?)* "}" ws
+      selector? '{' ws declaration? (';' declaration?)* '}' ws
     end
 
     rule selector
@@ -27,7 +27,7 @@ module CSS
     end
 
     rule declaration
-      property ":" ws value
+      property ':' ws value
     end
 
     rule property
@@ -48,19 +48,19 @@ module CSS
     # parser. As we're using a PEG, we have no need of a separate lexing step.
 
     rule ident
-      "-"? ([a-zA-Z] / '_' / nonascii / escape) nmchar*
+      '-'? ([a-zA-Z] / '_' / nonascii / escape) nmchar*
     end
 
     rule atkeyword
-      "@" ident
+      '@' ident
     end
 
     rule hash
-      "#" ident
+      '#' ident
     end
 
     rule percent
-      number "%"
+      number '%'
     end
 
     rule dimension
@@ -68,7 +68,7 @@ module CSS
     end
 
     rule uri
-      "url(" ws (string / urlchar*) ws ")"
+      'url(' ws (string / urlchar*) ws ')'
     end
 
     rule unicode_range
@@ -120,7 +120,7 @@ module CSS
     end
 
     rule nmchar
-      [a-zA-Z0-9] / "-" / "_" / nonascii / escape
+      [a-zA-Z0-9] / '-' / '_' / nonascii / escape
     end
 
     rule number
@@ -132,7 +132,7 @@ module CSS
     end
 
     rule stringchar
-      urlchar / "\x20" / "\\" nl
+      urlchar / "\x20" / '\\' nl
     end
 
     rule urlchar
@@ -146,7 +146,7 @@ module CSS
 
     # Whitespace
     rule w
-      ("\t" / "\n" / "\f" / "\r" / " ")*
+      "\t" / "\n" / "\f" / "\r" / ' '
     end
     rule ws
       w*
